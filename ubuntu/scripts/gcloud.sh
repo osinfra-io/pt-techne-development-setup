@@ -4,9 +4,10 @@ set -euo pipefail
 
 trap 'echo "Error: Script failed at line ${LINENO}" >&2' ERR
 
-# Check if gcloud is already installed
-if command -v gcloud &> /dev/null; then
-    echo "Google Cloud SDK is already installed, skipping..."
+# Check if both Google Cloud SDK packages are already installed
+if dpkg-query -W -f='${Status}' google-cloud-sdk 2>/dev/null | grep -q "ok installed" && \
+   dpkg-query -W -f='${Status}' google-cloud-sdk-gke-gcloud-auth-plugin 2>/dev/null | grep -q "ok installed"; then
+    echo "Google Cloud SDK packages are already installed, skipping..."
     exit 0
 fi
 

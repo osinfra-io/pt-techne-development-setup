@@ -49,8 +49,12 @@ fi
 
 sed -i '/^plugins=(git)$/s/^/#/' ${HOME}/.zshrc
 
-cat << 'EOF' >> ${HOME}/.zshrc
-alias gpg-passphrase="echo "test" | gpg --clearsign > /dev/null 2>&1"
+# Add custom shell configuration (idempotent - check for marker)
+if ! grep -q "# SHELL_SH_MARKER" "${HOME}/.zshrc"; then
+    cat << 'EOF' >> ${HOME}/.zshrc
+
+# SHELL_SH_MARKER - Configuration added by shell.sh setup script
+alias gpg-passphrase='echo "test" | gpg --clearsign > /dev/null 2>&1'
 
 export GOOGLE_AUTH_SUPPRESS_CREDENTIALS_WARNINGS=true
 export GPG_TTY=${TTY}
@@ -74,6 +78,7 @@ fi
 
 eval "$(fzf --zsh)"
 EOF
+fi
 
 # Add plugins to the beginning (idempotent - check if already present)
 if ! grep -q "^plugins=(git terraform gcloud docker kubectl helm zsh-autosuggestions)" "${HOME}/.zshrc"; then
