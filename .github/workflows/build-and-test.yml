@@ -13,7 +13,8 @@ permissions:
 
 jobs:
   build-and-test-ubuntu-docker-image:
-    if: ${{ github.actor != 'dependabot[bot]' }}
+    name: Build and Test
+    if: github.event.head_commit.author.username != 'dependabot[bot]'
     runs-on: ubuntu-latest
 
     steps:
