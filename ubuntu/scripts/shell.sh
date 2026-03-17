@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 
-set -e
+set -euo pipefail
 
-cd ~
+trap 'echo "Error: Script failed at line ${LINENO}" >&2' ERR
+
+cd ${HOME}
 
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
@@ -12,7 +14,7 @@ command -v zsh | sudo tee -a /etc/shells
 
 # Vim
 
-cat << EOF > ~/.vimrc
+cat << EOF > ${HOME}/.vimrc
 set visualbell
 
 filetype plugin indent on
@@ -23,41 +25,41 @@ EOF
 
 # For some reason we need to authenticate to GitHub to install extensions
 
-# gh extension install github/gh-copilot github/gh-projects actions/gh-actions-cache advanced-security/gh-sbom
+# gh extension install github/gh-copilot
 
 # Oh My Zsh
 
-if [ ! -f ~/.oh-my-zsh/oh-my-zsh.sh ]; then
+if [ ! -f ${HOME}/.oh-my-zsh/oh-my-zsh.sh ]; then
   sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 fi
 
 # zsh-autosuggestions
 
-if [ ! -d "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions" ]; then
-  git clone https://github.com/zsh-users/zsh-autosuggestions "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"
+if [ ! -d "${ZSH_CUSTOM:-${HOME}/.oh-my-zsh/custom}/plugins/zsh-autosuggestions" ]; then
+  git clone https://github.com/zsh-users/zsh-autosuggestions "${ZSH_CUSTOM:-${HOME}/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"
 fi
 
 # Shell setup
 
-if [ -f ~/.zshrc ]; then
-  cp ~/.zshrc ~/.zshrc-"$(date +"%Y%m%d_%H%M%S")".bak
+if [ -f ${HOME}/.zshrc ]; then
+  cp ${HOME}/.zshrc ${HOME}/.zshrc-"$(date +"%Y%m%d_%H%M%S")".bak
 fi
 
 # Comment out default plugins
 
-sed -i '/^plugins=(git)$/s/^/#/' ~/.zshrc
+sed -i '/^plugins=(git)$/s/^/#/' ${HOME}/.zshrc
 
-cat << 'EOF' >> ~/.zshrc
+cat << 'EOF' >> ${HOME}/.zshrc
 alias gpg-passphrase="echo "test" | gpg --clearsign > /dev/null 2>&1"
 
 export GOOGLE_AUTH_SUPPRESS_CREDENTIALS_WARNINGS=true
-export GPG_TTY=$TTY
+export GPG_TTY=${TTY}
 export EDITOR=vim
 
 zstyle ':completion::complete:*' use-cache 1
 
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-[[ ! -f ~/.exports ]] || source ~/.exports
+[[ ! -f ${HOME}/.p10k.zsh ]] || source ${HOME}/.p10k.zsh
+[[ ! -f ${HOME}/.exports ]] || source ${HOME}/.exports
 
 source /home/linuxbrew/.linuxbrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /home/linuxbrew/.linuxbrew/opt/powerlevel10k/share/powerlevel10k/powerlevel10k.zsh-theme
@@ -69,17 +71,28 @@ eval "$(gh copilot alias -- zsh)"
 eval "$(fzf --zsh)"
 EOF
 
-echo -e "plugins=(git terraform gcloud docker kubectl helm zsh-autosuggestions)\n$(cat ~/.zshrc)" > ~/.zshrc
-echo -e "eval \"\$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\"\n$(cat ~/.zshrc)" > ~/.zshrc
-echo -e "export PATH=\$HOME/bin:\$PATH\n$(cat ~/.zshrc)" > ~/.zshrc
+# Add plugins to the beginning (idempotent - check if already present)
+if ! grep -q "^plugins=(git terraform gcloud docker kubectl helm zsh-autosuggestions)" "${HOME}/.zshrc"; then
+    echo -e "plugins=(git terraform gcloud docker kubectl helm zsh-autosuggestions)\n$(cat ${HOME}/.zshrc)" > ${HOME}/.zshrc
+fi
+
+# Add brew shellenv to the beginning (idempotent)
+if ! grep -q "eval.*brew shellenv" "${HOME}/.zshrc"; then
+    echo -e "eval \"\$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\"\n$(cat ${HOME}/.zshrc)" > ${HOME}/.zshrc
+fi
+
+# Add HOME/bin to PATH (idempotent)
+if ! grep -q "export PATH=\$HOME/bin:\$PATH" "${HOME}/.zshrc"; then
+    echo -e "export PATH=\$HOME/bin:\$PATH\n$(cat ${HOME}/.zshrc)" > ${HOME}/.zshrc
+fi
 
 # Create update script
 
-mkdir -p ~/bin
-cat << 'EOF' > ~/bin/update.zsh
+mkdir -p ${HOME}/bin
+cat << 'EOF' > ${HOME}/bin/update.zsh
 #!/usr/bin/env zsh
 
-source ~/.zshrc
+source ${HOME}/.zshrc
 
 # Oh-my-zsh
 ${ZSH}/tools/upgrade.sh
@@ -99,8 +112,11 @@ brew cleanup
 gh extension upgrade --all
 
 # zsh-autosuggestions
-cd "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"
+cd "${ZSH_CUSTOM:-${HOME}/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"
 git pull
+cd - > /dev/null
+
+echo "All updates complete!"
 EOF
 
-chmod 755 ~/bin/update.zsh
+chmod 755 ${HOME}/bin/update.zsh

@@ -9,6 +9,21 @@ When you invest in Infrastructure as Code (IaC), you will find that onboarding d
 - Standardized IaC developer environments
 - Simplify onboarding so new IaC developers can contribute easier
 
+## Prerequisites
+
+Before running the setup script, ensure you have:
+
+- **Operating System**: Ubuntu 22.04 or 24.04 (other Debian-based distributions may work)
+- **Internet Connection**: Required to download packages and tools
+- **Disk Space**: At least 5GB of free disk space for all tools and dependencies
+- **User Permissions**: Sudo access (you will be prompted for your password during installation)
+- **curl**: Pre-installed on most Ubuntu systems (`sudo apt install curl` if needed)
+
+**Recommended for best experience:**
+
+- Terminal with true color support for Powerlevel10k theme
+- Nerd Font installed for proper icon rendering
+
 ## <img align="left" width="25" height="25" src="https://user-images.githubusercontent.com/1610100/196566203-0acc19c8-f1d9-4481-9424-24da28c53d99.png">Ubuntu Setup
 
 The setup script installs a complete IaC development environment including:

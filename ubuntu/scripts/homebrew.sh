@@ -1,5 +1,14 @@
 #!/usr/bin/env bash
 
-set -e
+set -euo pipefail
 
-NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/221629f27c40232c317acc308fbf59f87454afb8/install.sh)"
+trap 'echo "Error: Script failed at line ${LINENO}" >&2' ERR
+
+# Use the official Homebrew installation script (HEAD version)
+# https://docs.brew.sh/Installation
+
+if [[ -f /home/linuxbrew/.linuxbrew/bin/brew ]]; then
+    echo "Homebrew is already installed, skipping..."
+else
+    NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
