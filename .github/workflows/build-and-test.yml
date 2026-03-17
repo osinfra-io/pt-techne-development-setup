@@ -7,12 +7,13 @@ on:
       - "**.md"
 
 permissions:
+  actions: write
   contents: read
   packages: write
 
 jobs:
   build-and-test-ubuntu-docker-image:
-    name: Build and Test Ubuntu Docker Image
+    name: Build and Test
     if: ${{ github.actor != 'dependabot[bot]' }}
     runs-on: ubuntu-latest
 
