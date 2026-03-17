@@ -5,12 +5,12 @@ on:
     types: [published]
 
 permissions:
+  actions: write
   contents: read
   packages: write
 
 jobs:
   build-and-push-ubuntu-docker-image:
-    name: Build and Push Ubuntu Docker Image
     runs-on: ubuntu-latest
     env:
       VERSION: ${{ github.event.release.tag_name }}
@@ -48,6 +48,6 @@ jobs:
           tags: |
             ghcr.io/osinfra-io/ubuntu:${{ env.VERSION }}
             ghcr.io/osinfra-io/ubuntu:latest
-          cache-from: type=registry,ref=ghcr.io/osinfra-io/ubuntu:latest
-          cache-to: type=inline
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           push: true
