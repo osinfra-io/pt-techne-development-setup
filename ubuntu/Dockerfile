@@ -16,15 +16,15 @@ RUN /tmp/apt.sh && rm /tmp/apt.sh
 COPY --chown=vscode:vscode scripts/homebrew.sh /tmp/homebrew.sh
 RUN /tmp/homebrew.sh && rm /tmp/homebrew.sh
 
-# Layer: brew tools (changes when tool list changes)
-
-COPY --chown=vscode:vscode scripts/tools.sh /tmp/tools.sh
-RUN /tmp/tools.sh && rm /tmp/tools.sh
-
 # Layer: Google Cloud SDK (changes when gcloud version changes)
 
 COPY --chown=vscode:vscode scripts/gcloud.sh /tmp/gcloud.sh
 RUN /tmp/gcloud.sh && rm /tmp/gcloud.sh
+
+# Layer: brew tools (changes when tool list changes)
+
+COPY --chown=vscode:vscode scripts/tools.sh /tmp/tools.sh
+RUN /tmp/tools.sh && rm /tmp/tools.sh
 
 # Layer: shell config (changes most often)
 
