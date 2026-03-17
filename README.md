@@ -11,7 +11,12 @@ When you invest in Infrastructure as Code (IaC), you will find that onboarding d
 
 ## <img align="left" width="25" height="25" src="https://user-images.githubusercontent.com/1610100/196566203-0acc19c8-f1d9-4481-9424-24da28c53d99.png">Ubuntu Setup
 
-You can run the following commands to install all the local tools we will need.
+The setup script installs a complete IaC development environment including:
+
+- **Homebrew** - Package manager for Linux
+- **Google Cloud SDK** - gcloud CLI and GKE authentication plugin
+- **Development Tools** - OpenTofu, kubectl, helm, istioctl, gh CLI, pre-commit, k9s, kubectx, opa, and more
+- **Shell Environment** - Zsh with Oh My Zsh, Powerlevel10k theme, syntax highlighting, and autosuggestions
 
 *The following step is optional but allows sudo access without entering a password.*
 
@@ -19,8 +24,10 @@ You can run the following commands to install all the local tools we will need.
  echo "$USER ALL=(ALL) NOPASSWD:ALL" | sudo EDITOR='tee -a' visudo
  ```
 
+Run the setup script:
+
 ```none
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/osinfra-io/local-development-setup/main/ubuntu/setup.sh)"
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/osinfra-io/pt-techne-development-setup/main/ubuntu/setup.sh)"
 ```
 
 Change your default shell to Zsh and exit.
