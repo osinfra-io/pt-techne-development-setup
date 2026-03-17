@@ -67,23 +67,36 @@ source /home/linuxbrew/.linuxbrew/opt/powerlevel10k/share/powerlevel10k/powerlev
 unsetopt correct_all
 setopt correct
 
-eval "$(gh copilot alias -- zsh)"
+# Only initialize gh copilot alias if the extension is installed
+if gh extension list 2>/dev/null | grep -q "github/gh-copilot"; then
+    eval "$(gh copilot alias -- zsh)"
+fi
+
 eval "$(fzf --zsh)"
 EOF
 
 # Add plugins to the beginning (idempotent - check if already present)
 if ! grep -q "^plugins=(git terraform gcloud docker kubectl helm zsh-autosuggestions)" "${HOME}/.zshrc"; then
-    echo -e "plugins=(git terraform gcloud docker kubectl helm zsh-autosuggestions)\n$(cat ${HOME}/.zshrc)" > ${HOME}/.zshrc
+    temp_file=$(mktemp)
+    printf '%s\n' "plugins=(git terraform gcloud docker kubectl helm zsh-autosuggestions)" > "${temp_file}"
+    cat "${HOME}/.zshrc" >> "${temp_file}"
+    mv "${temp_file}" "${HOME}/.zshrc"
 fi
 
 # Add brew shellenv to the beginning (idempotent)
 if ! grep -q "eval.*brew shellenv" "${HOME}/.zshrc"; then
-    echo -e "eval \"\$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\"\n$(cat ${HOME}/.zshrc)" > ${HOME}/.zshrc
+    temp_file=$(mktemp)
+    printf '%s\n' 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' > "${temp_file}"
+    cat "${HOME}/.zshrc" >> "${temp_file}"
+    mv "${temp_file}" "${HOME}/.zshrc"
 fi
 
 # Add HOME/bin to PATH (idempotent)
 if ! grep -q "export PATH=\$HOME/bin:\$PATH" "${HOME}/.zshrc"; then
-    echo -e "export PATH=\$HOME/bin:\$PATH\n$(cat ${HOME}/.zshrc)" > ${HOME}/.zshrc
+    temp_file=$(mktemp)
+    printf '%s\n' 'export PATH=$HOME/bin:$PATH' > "${temp_file}"
+    cat "${HOME}/.zshrc" >> "${temp_file}"
+    mv "${temp_file}" "${HOME}/.zshrc"
 fi
 
 # Create update script
