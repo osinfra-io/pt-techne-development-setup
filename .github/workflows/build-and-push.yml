@@ -11,6 +11,8 @@ permissions:
 
 jobs:
   build-and-push-ubuntu-docker-image:
+    name: Build and Push
+    if: ${{ github.actor != 'dependabot[bot]' }}
     runs-on: ubuntu-latest
     env:
       VERSION: ${{ github.event.release.tag_name }}
