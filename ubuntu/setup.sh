@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-set -e
+set -euo pipefail
+
+trap 'echo "Error: Setup failed at line ${LINENO}" >&2' ERR
 
 cd ~
 
@@ -14,8 +16,10 @@ scripts=(
     shell.sh
 )
 
-for script in "${scripts[@]}"; do
-    echo "Running $script..."
+total=${#scripts[@]}
+for i in "${!scripts[@]}"; do
+    script="${scripts[$i]}"
+    echo "[$((i+1))/${total}] Running ${script}..."
     curl -fsSL "https://raw.githubusercontent.com/osinfra-io/pt-techne-development-setup/main/ubuntu/scripts/$script" | bash
 done
 

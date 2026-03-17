@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/vscode/devcontainers/base:2.1.7-ubuntu22.04
+FROM mcr.microsoft.com/vscode/devcontainers/base:2.1.7-ubuntu24.04
 
 # We need to run this as root then switch to vscode vs. having everything in the same RUN command
 
@@ -34,5 +34,9 @@ RUN /tmp/shell.sh && rm /tmp/shell.sh
 # Reasonable defaults for Powerlevel10k
 
 COPY --chown=vscode:vscode .p10k.zsh /home/vscode/.p10k.zsh
+
+# Healthcheck to verify the container is functional
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+	CMD zsh -c 'exit 0' || exit 1
 
 CMD ["zsh"]
