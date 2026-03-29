@@ -1,6 +1,6 @@
 # Setup scripts for local Infrastructure as Code (IaC) development
 
-[![Dependabot](https://img.shields.io/github/actions/workflow/status/osinfra-io/pt-techne-development-setup/dependabot.yml?style=for-the-badge&logo=github&color=2088FF&label=Dependabot)](https://github.com/osinfra-io/pt-techne-development-setup/actions/workflows/dependabot.yml) [![Datadog Security Enabled](https://img.shields.io/badge/Datadog%20Security-Enabled-632CA6?style=for-the-badge&logo=datadog)](https://app.datadoghq.com/security/code-security/repositories?repository_id=pt-techne-development-setup)
+[![Dependabot](https://img.shields.io/github/actions/workflow/status/osinfra-io/pt-techne-development-setup/dependabot.yml?style=for-the-badge&logo=github&color=2088FF&label=Dependabot)](https://github.com/osinfra-io/pt-techne-development-setup/actions/workflows/dependabot.yml)
 
 ## Goals
 
