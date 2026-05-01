@@ -20,7 +20,11 @@ fi
 
 # Zsh
 
-command -v zsh | sudo tee -a /etc/shells
+ZSH_PATH="$(command -v zsh)"
+if ! grep -qF "$ZSH_PATH" /etc/shells; then
+    echo "$ZSH_PATH" | sudo tee -a /etc/shells
+fi
+sudo chsh "$USER" -s "$ZSH_PATH"
 
 # Vim
 

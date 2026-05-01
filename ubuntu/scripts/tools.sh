@@ -29,6 +29,7 @@ brew install \
   opentofu \
   powerlevel10k \
   pre-commit \
+  zsh \
   zsh-syntax-highlighting
 
 # Automatically enable pre-commit on repositories

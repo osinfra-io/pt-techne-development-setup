@@ -1,9 +1,5 @@
 FROM mcr.microsoft.com/vscode/devcontainers/base:2.1.8-ubuntu24.04
 
-# We need to run this as root then switch to vscode vs. having everything in the same RUN command
-
-RUN chsh vscode -s /usr/bin/zsh
-
 USER vscode
 
 # Layer: apt packages (changes rarely)

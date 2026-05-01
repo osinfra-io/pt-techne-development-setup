@@ -16,10 +16,3 @@ if ! command -v vim &> /dev/null; then
 else
     echo "vim is already installed, skipping..."
 fi
-
-# Install zsh if not already installed
-if ! command -v zsh &> /dev/null; then
-    sudo apt -y install zsh
-else
-    echo "zsh is already installed, skipping..."
-fi
