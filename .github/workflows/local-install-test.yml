@@ -15,7 +15,7 @@ permissions:
 
 jobs:
   test-local-install:
-    name: Local Install Test
+    name: Test
     if: ${{ github.actor != 'dependabot[bot]' }}
     runs-on: ubuntu-24.04
     timeout-minutes: 60
@@ -36,7 +36,7 @@ jobs:
           zsh --version
           gcloud --version
           brew --version
-          opentofu --version
+          tofu --version
           helm version
           kubectl version --client
           gh --version
