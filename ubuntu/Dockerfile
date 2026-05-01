@@ -12,6 +12,8 @@ RUN /tmp/apt.sh && rm /tmp/apt.sh
 COPY --chown=vscode:vscode scripts/homebrew.sh /tmp/homebrew.sh
 RUN /tmp/homebrew.sh && rm /tmp/homebrew.sh
 
+ENV PATH="/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:${PATH}"
+
 # Layer: Google Cloud SDK (changes when gcloud version changes)
 
 COPY --chown=vscode:vscode scripts/gcloud.sh /tmp/gcloud.sh
