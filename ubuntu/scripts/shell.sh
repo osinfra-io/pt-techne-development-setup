@@ -24,7 +24,7 @@ ZSH_PATH="$(command -v zsh)"
 if ! grep -qF "$ZSH_PATH" /etc/shells; then
     echo "$ZSH_PATH" | sudo tee -a /etc/shells
 fi
-sudo chsh "$USER" -s "$ZSH_PATH"
+sudo chsh "$(whoami)" -s "$ZSH_PATH"
 
 # Vim
 
