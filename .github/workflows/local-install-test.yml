@@ -1,0 +1,42 @@
+name: Local Install Test
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "ubuntu/**"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  test-local-install:
+    name: Local Install Test
+    if: ${{ github.actor != 'dependabot[bot]' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+
+    steps:
+      # Checkout
+      # https://github.com/marketplace/actions/checkout
+
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Run Setup Script (LOCAL mode)
+        run: LOCAL=true bash ubuntu/setup.sh
+
+      - name: Verify Installed Tools
+        run: |
+          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+          zsh --version
+          gcloud --version
+          brew --version
+          opentofu --version
+          helm version
+          kubectl version --client
+          gh --version
