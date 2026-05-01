@@ -13,21 +13,21 @@ eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
 # Copy p10k config if running locally (Docker handles this via COPY instruction)
 
-P10K_SOURCE="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/.p10k.zsh"
+P10K_SOURCE="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/files/.p10k.zsh"
 if [[ -f "${P10K_SOURCE}" ]] && [[ ! -f "${HOME}/.p10k.zsh" ]]; then
     cp "${P10K_SOURCE}" "${HOME}/.p10k.zsh"
 fi
 
 # Copy vimrc config if running locally (Docker handles this via COPY instruction)
 
-VIMRC_SOURCE="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/.vimrc"
+VIMRC_SOURCE="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/files/.vimrc"
 if [[ -f "${VIMRC_SOURCE}" ]] && [[ ! -f "${HOME}/.vimrc" ]]; then
     cp "${VIMRC_SOURCE}" "${HOME}/.vimrc"
 fi
 
 # Copy k9s config if running locally (Docker handles this via COPY instruction)
 
-K9S_SOURCE="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/k9s"
+K9S_SOURCE="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/files/k9s"
 if [[ -d "${K9S_SOURCE}" ]] && [[ ! -d "${HOME}/.config/k9s" ]]; then
     mkdir -p "${HOME}/.config"
     cp -r "${K9S_SOURCE}" "${HOME}/.config/k9s"

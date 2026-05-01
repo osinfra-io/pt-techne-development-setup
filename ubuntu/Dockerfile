@@ -31,15 +31,15 @@ RUN /tmp/shell.sh && rm /tmp/shell.sh
 
 # Reasonable defaults for Powerlevel10k
 
-COPY --chown=vscode:vscode .p10k.zsh /home/vscode/.p10k.zsh
+COPY --chown=vscode:vscode files/.p10k.zsh /home/vscode/.p10k.zsh
 
 # Reasonable defaults for Vim
 
-COPY --chown=vscode:vscode .vimrc /home/vscode/.vimrc
+COPY --chown=vscode:vscode files/.vimrc /home/vscode/.vimrc
 
 # Reasonable defaults for k9s
 
-COPY --chown=vscode:vscode k9s/ /home/vscode/.config/k9s/
+COPY --chown=vscode:vscode files/k9s/ /home/vscode/.config/k9s/
 
 # Healthcheck to verify the container is functional
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
