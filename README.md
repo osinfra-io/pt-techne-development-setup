@@ -9,7 +9,7 @@ When you invest in Infrastructure as Code (IaC), you will find that onboarding d
 - Standardized IaC developer environments
 - Simplify onboarding so new IaC developers can contribute easier
 
-## <img align="left" width="25" height="25" src="https://user-images.githubusercontent.com/1610100/196566203-0acc19c8-f1d9-4481-9424-24da28c53d99.png"> Ubuntu Setup
+## <img align="left" width="25" height="25" src="https://user-images.githubusercontent.com/1610100/196566203-0acc19c8-f1d9-4481-9424-24da28c53d99.png" alt="Ubuntu"> Ubuntu Setup
 
 *The following step is optional but allows sudo access without entering a password.*
 
