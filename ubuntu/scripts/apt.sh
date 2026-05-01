@@ -2,7 +2,10 @@
 
 set -euo pipefail
 
-trap 'echo "Error: Script failed at line ${LINENO}" >&2' ERR
+_errlog=$(mktemp)
+trap 'rm -f "${_errlog:-}"' EXIT
+trap 'sleep 0.1; echo "Error: Script failed at line ${LINENO}" >&2; tail -5 "$_errlog" >&2' ERR
+exec 2> >(tee "$_errlog" >&2)
 
 # Update package lists
 sudo apt update

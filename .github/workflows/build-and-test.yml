@@ -6,6 +6,10 @@ on:
     paths-ignore:
       - "**.md"
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   actions: write
   contents: read
@@ -16,6 +20,7 @@ jobs:
     name: Build and Test
     if: ${{ github.actor != 'dependabot[bot]' }}
     runs-on: ubuntu-latest
+    timeout-minutes: 60
 
     steps:
       # Checkout
@@ -55,4 +60,11 @@ jobs:
 
       - name: Test Ubuntu Docker Image
         run: |
-          docker run --rm ghcr.io/osinfra-io/ubuntu:test
+          docker run --rm ghcr.io/osinfra-io/ubuntu:test zsh --version
+          docker run --rm ghcr.io/osinfra-io/ubuntu:test gcloud --version
+          docker run --rm ghcr.io/osinfra-io/ubuntu:test brew --version
+          docker run --rm ghcr.io/osinfra-io/ubuntu:test copilot --version
+          docker run --rm ghcr.io/osinfra-io/ubuntu:test tofu --version
+          docker run --rm ghcr.io/osinfra-io/ubuntu:test helm version
+          docker run --rm ghcr.io/osinfra-io/ubuntu:test kubectl version --client
+          docker run --rm ghcr.io/osinfra-io/ubuntu:test gh --version
