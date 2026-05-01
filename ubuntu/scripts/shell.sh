@@ -35,12 +35,6 @@ filetype plugin indent on
 syntax on
 EOF
 
-# GitHub extensions
-
-# For some reason we need to authenticate to GitHub to install extensions
-
-# gh extension install github/gh-copilot
-
 # Oh My Zsh
 
 if [ ! -f ${HOME}/.oh-my-zsh/oh-my-zsh.sh ]; then

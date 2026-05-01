@@ -36,6 +36,7 @@ jobs:
           zsh --version
           gcloud --version
           brew --version
+          copilot --version
           tofu --version
           helm version
           kubectl version --client

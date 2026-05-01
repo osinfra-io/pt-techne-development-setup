@@ -63,6 +63,7 @@ jobs:
           docker run --rm ghcr.io/osinfra-io/ubuntu:test zsh --version
           docker run --rm ghcr.io/osinfra-io/ubuntu:test gcloud --version
           docker run --rm ghcr.io/osinfra-io/ubuntu:test brew --version
+          docker run --rm ghcr.io/osinfra-io/ubuntu:test copilot --version
           docker run --rm ghcr.io/osinfra-io/ubuntu:test tofu --version
           docker run --rm ghcr.io/osinfra-io/ubuntu:test helm version
           docker run --rm ghcr.io/osinfra-io/ubuntu:test kubectl version --client
