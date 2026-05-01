@@ -67,6 +67,7 @@ alias gpg-passphrase='echo "test" | gpg --clearsign > /dev/null 2>&1'
 export GOOGLE_AUTH_SUPPRESS_CREDENTIALS_WARNINGS=true
 export GPG_TTY=${TTY}
 export EDITOR=vim
+export TF_PLUGIN_CACHE_DIR=$HOME/.opentofu.d/plugin-cache
 
 zstyle ':completion::complete:*' use-cache 1
 
@@ -79,12 +80,37 @@ source /home/linuxbrew/.linuxbrew/opt/powerlevel10k/share/powerlevel10k/powerlev
 unsetopt correct_all
 setopt correct
 
-# Only initialize gh copilot alias if the extension is installed
-if gh extension list 2>/dev/null | grep -q "github/gh-copilot"; then
-    eval "$(gh copilot alias -- zsh)"
-fi
+eval "$(dircolors -p | \
+    sed 's/ 4[0-9];/ 01;/; s/;4[0-9];/;01;/g; s/;4[0-9] /;01 /' | \
+    dircolors /dev/stdin)"
 
 eval "$(fzf --zsh)"
+
+export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
+  --color=fg:#d0d0d0,fg+:#d0d0d0,bg:#1e1e1e,bg+:#3f3f3f
+  --color=hl:#5f87af,hl+:#5fd7ff,info:#afaf87,marker:#87ff00
+  --color=prompt:#d7005f,spinner:#af5fff,pointer:#af5fff,header:#87afaf
+  --color=gutter:#3f3f3f,border:#262626,label:#aeaeae,query:#d9d9d9
+  --border="rounded" --border-label="" --preview-window="border-rounded" --prompt="> "
+  --marker=">" --pointer="◆" --separator="─" --scrollbar="│"'
+
+autoload -Uz compinit
+compinit
+
+source /usr/share/google-cloud-sdk/completion.zsh.inc
+
+complete -o nospace -C /usr/bin/tofu tofu
+
+export COPILOT_CUSTOM_INSTRUCTIONS_DIRS="\
+$HOME/repositories/osinfra-io/platform-group/pt-ai-context,\
+$HOME/repositories/osinfra-io/platform-group/arche/pt-arche-ai-context,\
+$HOME/repositories/osinfra-io/platform-group/logos/pt-logos-ai-context,\
+$HOME/repositories/osinfra-io/platform-group/corpus/pt-corpus-ai-context,\
+$HOME/repositories/osinfra-io/platform-group/pneuma/pt-pneuma-ai-context,\
+$HOME/repositories/osinfra-io/platform-group/ekklesia/pt-ekklesia-ai-context,\
+$HOME/repositories/osinfra-io/platform-group/techne/pt-techne-ai-context"
+
+echo "test" | gpg --pinentry-mode loopback --passphrase "not a real passphrase" --clearsign > /dev/null 2>&1
 EOF
 fi
 
