@@ -121,9 +121,9 @@ EOF
 fi
 
 # Add plugins to the beginning (idempotent - check if already present)
-if ! grep -q "^plugins=(git terraform gcloud docker kubectl helm zsh-autosuggestions)" "${HOME}/.zshrc"; then
+if ! grep -q "^plugins=(git gcloud docker kubectl helm zsh-autosuggestions)" "${HOME}/.zshrc"; then
     temp_file=$(mktemp)
-    printf '%s\n' "plugins=(git terraform gcloud docker kubectl helm zsh-autosuggestions)" > "${temp_file}"
+    printf '%s\n' "plugins=(git gcloud docker kubectl helm zsh-autosuggestions)" > "${temp_file}"
     cat "${HOME}/.zshrc" >> "${temp_file}"
     mv "${temp_file}" "${HOME}/.zshrc"
 fi
