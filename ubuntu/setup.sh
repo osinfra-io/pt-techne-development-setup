@@ -2,11 +2,17 @@
 
 set -euo pipefail
 
-trap 'echo "Error: Setup failed at line ${LINENO}" >&2' ERR
+trap 'sleep 0.1; echo "Error: Setup failed at line ${LINENO}" >&2; tail -5 "$_errlog" >&2; rm -f "$_errlog"' ERR
+
+_errlog=$(mktemp)
+exec 2> >(tee "$_errlog" >&2)
+
+# Set to true to run scripts from the local filesystem instead of GitHub
+LOCAL=${LOCAL:-false}
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/scripts"
 
 cd ~
-
-# Download and run each setup script in order
 
 scripts=(
     apt.sh
@@ -16,11 +22,17 @@ scripts=(
     shell.sh
 )
 
+# Run each setup script in order
+
 total=${#scripts[@]}
 for i in "${!scripts[@]}"; do
     script="${scripts[$i]}"
     echo "[$((i+1))/${total}] Running ${script}..."
-    curl -fsSL "https://raw.githubusercontent.com/osinfra-io/pt-techne-development-setup/main/ubuntu/scripts/$script" | bash
+    if [[ "${LOCAL}" == "true" ]]; then
+        bash "${SCRIPT_DIR}/${script}"
+    else
+        curl -fsSL "https://raw.githubusercontent.com/osinfra-io/pt-techne-development-setup/main/ubuntu/scripts/$script" | bash
+    fi
 done
 
 echo "Setup complete!"

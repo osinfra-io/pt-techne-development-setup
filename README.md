@@ -45,6 +45,12 @@ Run the setup script:
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/osinfra-io/pt-techne-development-setup/main/ubuntu/setup.sh)"
 ```
 
+To test local changes without pushing to GitHub, set `LOCAL=true`:
+
+```none
+LOCAL=true bash ubuntu/setup.sh
+```
+
 Change your default shell to Zsh and exit.
 
 ```none

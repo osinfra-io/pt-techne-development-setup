@@ -2,7 +2,10 @@
 
 set -euo pipefail
 
-trap 'echo "Error: Script failed at line ${LINENO}" >&2' ERR
+trap 'sleep 0.1; echo "Error: Script failed at line ${LINENO}" >&2; tail -5 "$_errlog" >&2; rm -f "$_errlog"' ERR
+
+_errlog=$(mktemp)
+exec 2> >(tee "$_errlog" >&2)
 
 # Check if both Google Cloud SDK packages are already installed
 if dpkg-query -W -f='${Status}' google-cloud-sdk 2>/dev/null | grep -q "ok installed" && \

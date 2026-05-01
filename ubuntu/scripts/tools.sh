@@ -2,7 +2,10 @@
 
 set -euo pipefail
 
-trap 'echo "Error: Script failed at line ${LINENO}" >&2' ERR
+trap 'sleep 0.1; echo "Error: Script failed at line ${LINENO}" >&2; tail -5 "$_errlog" >&2; rm -f "$_errlog"' ERR
+
+_errlog=$(mktemp)
+exec 2> >(tee "$_errlog" >&2)
 
 # Verify Homebrew is installed
 if [[ ! -f /home/linuxbrew/.linuxbrew/bin/brew ]]; then
@@ -18,7 +21,6 @@ brew install \
   go \
   helm \
   istioctl \
-  jq \
   k9s \
   kubectl \
   kubectl-ai \
