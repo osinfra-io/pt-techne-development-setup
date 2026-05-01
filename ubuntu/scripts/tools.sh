@@ -28,6 +28,8 @@ brew install \
   kubectx \
   opa \
   opentofu \
+  regal \
+  vegeta \
   powerlevel10k \
   pre-commit \
   zsh \

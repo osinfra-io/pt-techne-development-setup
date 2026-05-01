@@ -33,6 +33,14 @@ RUN /tmp/shell.sh && rm /tmp/shell.sh
 
 COPY --chown=vscode:vscode .p10k.zsh /home/vscode/.p10k.zsh
 
+# Reasonable defaults for Vim
+
+COPY --chown=vscode:vscode .vimrc /home/vscode/.vimrc
+
+# Reasonable defaults for k9s
+
+COPY --chown=vscode:vscode k9s/ /home/vscode/.config/k9s/
+
 # Healthcheck to verify the container is functional
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
 	CMD zsh -c 'exit 0' || exit 1

@@ -18,6 +18,21 @@ if [[ -f "${P10K_SOURCE}" ]] && [[ ! -f "${HOME}/.p10k.zsh" ]]; then
     cp "${P10K_SOURCE}" "${HOME}/.p10k.zsh"
 fi
 
+# Copy vimrc config if running locally (Docker handles this via COPY instruction)
+
+VIMRC_SOURCE="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/.vimrc"
+if [[ -f "${VIMRC_SOURCE}" ]] && [[ ! -f "${HOME}/.vimrc" ]]; then
+    cp "${VIMRC_SOURCE}" "${HOME}/.vimrc"
+fi
+
+# Copy k9s config if running locally (Docker handles this via COPY instruction)
+
+K9S_SOURCE="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/k9s"
+if [[ -d "${K9S_SOURCE}" ]] && [[ ! -d "${HOME}/.config/k9s" ]]; then
+    mkdir -p "${HOME}/.config"
+    cp -r "${K9S_SOURCE}" "${HOME}/.config/k9s"
+fi
+
 # Zsh
 
 ZSH_PATH="$(command -v zsh)"
@@ -25,15 +40,6 @@ if ! grep -qF "$ZSH_PATH" /etc/shells; then
     echo "$ZSH_PATH" | sudo tee -a /etc/shells
 fi
 sudo chsh "$(whoami)" -s "$ZSH_PATH"
-
-# Vim
-
-cat << EOF > ${HOME}/.vimrc
-set visualbell
-
-filetype plugin indent on
-syntax on
-EOF
 
 # Oh My Zsh
 
@@ -141,6 +147,7 @@ fi
 # Create update script
 
 mkdir -p ${HOME}/bin
+mkdir -p ${HOME}/.opentofu.d/plugin-cache
 cat << 'EOF' > ${HOME}/bin/update.zsh
 #!/usr/bin/env zsh
 
