@@ -2,9 +2,9 @@
 
 set -euo pipefail
 
-trap 'sleep 0.1; echo "Error: Script failed at line ${LINENO}" >&2; tail -5 "$_errlog" >&2; rm -f "$_errlog"' ERR
-
 _errlog=$(mktemp)
+trap 'rm -f "${_errlog:-}"' EXIT
+trap 'sleep 0.1; echo "Error: Script failed at line ${LINENO}" >&2; tail -5 "$_errlog" >&2' ERR
 exec 2> >(tee "$_errlog" >&2)
 
 # Verify Homebrew is installed
