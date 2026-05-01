@@ -24,7 +24,7 @@ Before running the setup script, ensure you have:
 - Terminal with true color support for Powerlevel10k theme
 - Nerd Font installed for proper icon rendering
 
-## <img align="left" width="25" height="25" src="https://user-images.githubusercontent.com/1610100/196566203-0acc19c8-f1d9-4481-9424-24da28c53d99.png">Ubuntu Setup
+## <img align="left" width="25" height="25" src="https://user-images.githubusercontent.com/1610100/196566203-0acc19c8-f1d9-4481-9424-24da28c53d99.png"> Ubuntu Setup
 
 The setup script installs a complete IaC development environment including:
 
