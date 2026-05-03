@@ -26,10 +26,12 @@ brew install \
   kubectl \
   kubectl-ai \
   kubectx \
+  node \
   opa \
   opentofu \
   regal \
   vegeta \
+  yarn \
   powerlevel10k \
   pre-commit \
   zsh \
