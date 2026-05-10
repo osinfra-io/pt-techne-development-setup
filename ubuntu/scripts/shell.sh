@@ -11,26 +11,48 @@ cd ${HOME}
 
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
-# Copy p10k config if running locally (Docker handles this via COPY instruction)
+# Config file base URL for remote downloads
 
-P10K_SOURCE="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/files/.p10k.zsh"
-if [[ -f "${P10K_SOURCE}" ]] && [[ ! -f "${HOME}/.p10k.zsh" ]]; then
-    cp "${P10K_SOURCE}" "${HOME}/.p10k.zsh"
+FILES_BASE_URL="https://raw.githubusercontent.com/osinfra-io/pt-techne-development-setup/main/ubuntu/files"
+
+# Determine if running locally (BASH_SOURCE is set and resolves to a real file)
+
+FILES_DIR=""
+if [[ -n "${BASH_SOURCE[0]:-}" ]]; then
+    FILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/files"
 fi
 
-# Copy vimrc config if running locally (Docker handles this via COPY instruction)
+# Copy p10k config (Docker handles this via COPY instruction)
 
-VIMRC_SOURCE="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/files/.vimrc"
-if [[ -f "${VIMRC_SOURCE}" ]] && [[ ! -f "${HOME}/.vimrc" ]]; then
-    cp "${VIMRC_SOURCE}" "${HOME}/.vimrc"
+if [[ ! -f "${HOME}/.p10k.zsh" ]]; then
+    if [[ -n "${FILES_DIR}" ]] && [[ -f "${FILES_DIR}/.p10k.zsh" ]]; then
+        cp "${FILES_DIR}/.p10k.zsh" "${HOME}/.p10k.zsh"
+    else
+        curl -fsSL "${FILES_BASE_URL}/.p10k.zsh" -o "${HOME}/.p10k.zsh"
+    fi
 fi
 
-# Copy k9s config if running locally (Docker handles this via COPY instruction)
+# Copy vimrc config (Docker handles this via COPY instruction)
 
-K9S_SOURCE="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/files/k9s"
-if [[ -d "${K9S_SOURCE}" ]] && [[ ! -d "${HOME}/.config/k9s" ]]; then
-    mkdir -p "${HOME}/.config"
-    cp -r "${K9S_SOURCE}" "${HOME}/.config/k9s"
+if [[ ! -f "${HOME}/.vimrc" ]]; then
+    if [[ -n "${FILES_DIR}" ]] && [[ -f "${FILES_DIR}/.vimrc" ]]; then
+        cp "${FILES_DIR}/.vimrc" "${HOME}/.vimrc"
+    else
+        curl -fsSL "${FILES_BASE_URL}/.vimrc" -o "${HOME}/.vimrc"
+    fi
+fi
+
+# Copy k9s config (Docker handles this via COPY instruction)
+
+if [[ ! -d "${HOME}/.config/k9s" ]]; then
+    mkdir -p "${HOME}/.config/k9s/skins"
+    if [[ -n "${FILES_DIR}" ]] && [[ -d "${FILES_DIR}/k9s" ]]; then
+        cp -r "${FILES_DIR}/k9s" "${HOME}/.config/k9s"
+    else
+        curl -fsSL "${FILES_BASE_URL}/k9s/config.yaml" -o "${HOME}/.config/k9s/config.yaml"
+        curl -fsSL "${FILES_BASE_URL}/k9s/aliases.yaml" -o "${HOME}/.config/k9s/aliases.yaml"
+        curl -fsSL "${FILES_BASE_URL}/k9s/skins/osinfra.yaml" -o "${HOME}/.config/k9s/skins/osinfra.yaml"
+    fi
 fi
 
 # Zsh
