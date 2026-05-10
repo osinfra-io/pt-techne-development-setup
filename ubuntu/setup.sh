@@ -10,7 +10,9 @@ exec 2> >(tee "$_errlog" >&2)
 # Set to true to run scripts from the local filesystem instead of GitHub
 LOCAL=${LOCAL:-false}
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/scripts"
+if [[ "${LOCAL}" == "true" ]]; then
+    SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/scripts"
+fi
 
 cd ~
 
