@@ -20,6 +20,7 @@ brew install \
   fzf \
   gh \
   go \
+  golangci-lint \
   helm \
   istioctl \
   k9s \
@@ -29,6 +30,7 @@ brew install \
   node \
   opa \
   opentofu \
+  promptfoo \
   regal \
   vegeta \
   yarn \
