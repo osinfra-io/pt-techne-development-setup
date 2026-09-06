@@ -33,11 +33,17 @@ jobs:
       - name: Verify Installed Tools
         run: |
           eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-          zsh --version
-          gcloud --version
-          brew --version
-          copilot --version
-          tofu --version
-          helm version
-          kubectl version --client
-          gh --version
+
+          for tool in zsh gcloud brew copilot tofu helm kubectl gh; do
+            case "$tool" in
+              helm)
+                helm version
+                ;;
+              kubectl)
+                kubectl version --client
+                ;;
+              *)
+                "$tool" --version
+                ;;
+            esac
+          done
