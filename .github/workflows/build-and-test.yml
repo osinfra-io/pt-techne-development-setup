@@ -60,11 +60,16 @@ jobs:
 
       - name: Test Ubuntu Docker Image
         run: |
-          docker run --rm ghcr.io/osinfra-io/ubuntu:test zsh --version
-          docker run --rm ghcr.io/osinfra-io/ubuntu:test gcloud --version
-          docker run --rm ghcr.io/osinfra-io/ubuntu:test brew --version
-          docker run --rm ghcr.io/osinfra-io/ubuntu:test copilot --version
-          docker run --rm ghcr.io/osinfra-io/ubuntu:test tofu --version
-          docker run --rm ghcr.io/osinfra-io/ubuntu:test helm version
-          docker run --rm ghcr.io/osinfra-io/ubuntu:test kubectl version --client
-          docker run --rm ghcr.io/osinfra-io/ubuntu:test gh --version
+          for tool in zsh gcloud brew copilot tofu helm kubectl gh; do
+            case "$tool" in
+              helm)
+                docker run --rm ghcr.io/osinfra-io/ubuntu:test helm version
+                ;;
+              kubectl)
+                docker run --rm ghcr.io/osinfra-io/ubuntu:test kubectl version --client
+                ;;
+              *)
+                docker run --rm ghcr.io/osinfra-io/ubuntu:test "$tool" --version
+                ;;
+            esac
+          done
