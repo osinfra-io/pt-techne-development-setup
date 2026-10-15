@@ -16,3 +16,10 @@ if ! command -v vim &> /dev/null; then
 else
     echo "vim is already installed, skipping..."
 fi
+
+# Install jq if not already installed
+if ! command -v jq &> /dev/null; then
+    sudo apt -y install jq
+else
+    echo "jq is already installed, skipping..."
+fi
