@@ -34,6 +34,16 @@ Once complete, you can stay current by running the generated update script.
 ~/bin/update.zsh
 ```
 
+## Clone Platform Repositories
+
+All platform engineers use the same directory layout so paths in documentation and tooling match everywhere. After authenticating the GitHub CLI (`gh auth login`), run:
+
+```none
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/osinfra-io/pt-techne-development-setup/main/clone-repositories.sh)"
+```
+
+This clones every `pt-*` repository into `~/repositories/osinfra-io/platform-group/<team>/<repository>` (for example `techne/pt-techne-development-setup`). The `pt-ai-*` repositories are cloned directly under `platform-group/`. The script skips repositories that already exist, so re-run it to pick up new repositories.
+
 ### Local Development
 
 To test local changes without pushing to GitHub, set `LOCAL=true`:
