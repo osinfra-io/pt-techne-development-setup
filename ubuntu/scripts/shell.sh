@@ -7,7 +7,7 @@ trap 'rm -f "${_errlog:-}"' EXIT
 trap 'sleep 0.1; echo "Error: Script failed at line ${LINENO}" >&2; tail -5 "$_errlog" >&2' ERR
 exec 2> >(tee "$_errlog" >&2)
 
-cd ${HOME}
+cd "${HOME}"
 
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
@@ -65,7 +65,7 @@ sudo chsh "$(whoami)" -s "$ZSH_PATH"
 
 # Oh My Zsh
 
-if [ ! -f ${HOME}/.oh-my-zsh/oh-my-zsh.sh ]; then
+if [ ! -f "${HOME}/.oh-my-zsh/oh-my-zsh.sh" ]; then
   sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 fi
 
@@ -77,17 +77,17 @@ fi
 
 # Shell setup
 
-if [ -f ${HOME}/.zshrc ]; then
-  cp ${HOME}/.zshrc ${HOME}/.zshrc-"$(date +"%Y%m%d_%H%M%S")".bak
+if [ -f "${HOME}/.zshrc" ]; then
+  cp "${HOME}/.zshrc" "${HOME}/.zshrc-$(date +"%Y%m%d_%H%M%S").bak"
 fi
 
 # Comment out default plugins
 
-sed -i '/^plugins=(git)$/s/^/#/' ${HOME}/.zshrc
+sed -i '/^plugins=(git)$/s/^/#/' "${HOME}/.zshrc"
 
 # Add custom shell configuration (idempotent - check for marker)
 if ! grep -q "# SHELL_SH_MARKER" "${HOME}/.zshrc"; then
-    cat << 'EOF' >> ${HOME}/.zshrc
+    cat << 'EOF' >> "${HOME}/.zshrc"
 
 # SHELL_SH_MARKER - Configuration added by shell.sh setup script
 alias gpg-passphrase='echo "test" | gpg --clearsign > /dev/null 2>&1'
@@ -153,7 +153,9 @@ fi
 # Add brew shellenv to the beginning (idempotent)
 if ! grep -q "eval.*brew shellenv" "${HOME}/.zshrc"; then
     temp_file=$(mktemp)
-    printf '%s\n' 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' > "${temp_file}"
+    cat << 'EOF' > "${temp_file}"
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+EOF
     cat "${HOME}/.zshrc" >> "${temp_file}"
     mv "${temp_file}" "${HOME}/.zshrc"
 fi
@@ -161,16 +163,18 @@ fi
 # Add HOME/bin to PATH (idempotent)
 if ! grep -q "export PATH=\$HOME/bin:\$PATH" "${HOME}/.zshrc"; then
     temp_file=$(mktemp)
-    printf '%s\n' 'export PATH=$HOME/bin:$PATH' > "${temp_file}"
+    cat << 'EOF' > "${temp_file}"
+export PATH=$HOME/bin:$PATH
+EOF
     cat "${HOME}/.zshrc" >> "${temp_file}"
     mv "${temp_file}" "${HOME}/.zshrc"
 fi
 
 # Create update script
 
-mkdir -p ${HOME}/bin
-mkdir -p ${HOME}/.opentofu.d/plugin-cache
-cat << 'EOF' > ${HOME}/bin/update.zsh
+mkdir -p "${HOME}/bin"
+mkdir -p "${HOME}/.opentofu.d/plugin-cache"
+cat << 'EOF' > "${HOME}/bin/update.zsh"
 #!/usr/bin/env zsh
 
 source ${HOME}/.zshrc
@@ -200,4 +204,4 @@ cd - > /dev/null
 echo "All updates complete!"
 EOF
 
-chmod 755 ${HOME}/bin/update.zsh
+chmod 755 "${HOME}/bin/update.zsh"
