@@ -41,5 +41,5 @@ brew install \
 
 # Automatically enable pre-commit on repositories
 
-git config --global init.templateDir ${HOME}/.git-template
-pre-commit init-templatedir ${HOME}/.git-template
+git config --global init.templateDir "${HOME}/.git-template"
+pre-commit init-templatedir "${HOME}/.git-template"
